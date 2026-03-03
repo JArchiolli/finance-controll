@@ -43,6 +43,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      target: dev
     container_name: finance_web
     restart: unless-stopped
     ports:

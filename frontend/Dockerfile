@@ -1,4 +1,5 @@
-FROM node:20-alpine
+# ── Dev stage (usado pelo docker-compose local) ─────────
+FROM node:20-alpine AS dev
 
 WORKDIR /app
 
@@ -10,3 +11,18 @@ COPY . .
 EXPOSE 5173
 
 CMD ["npm", "run", "dev"]
+
+# ── Build stage ──────────────────────────────────────────
+FROM dev AS build
+
+RUN npm run build
+
+# ── Production stage (nginx com SPA fallback) ────────────
+FROM nginx:alpine AS production
+
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
