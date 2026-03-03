@@ -22,7 +22,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  // Valida token existente ao carregar a app
   useEffect(() => {
     const token = localStorage.getItem(STORAGE_TOKEN_KEY);
     if (token) {

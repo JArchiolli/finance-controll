@@ -71,7 +71,6 @@ export interface GroupTotal {
   total: number;
 }
 
-// ── Constantes ──────────────────────────────────────────
 
 export const MONTH_LABELS = [
   'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',

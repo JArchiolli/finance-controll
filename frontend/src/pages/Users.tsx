@@ -10,7 +10,6 @@ export function Users() {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Modal state
   const modal = useModal();
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'USER' as 'ADMIN' | 'USER' });
@@ -158,7 +157,6 @@ export function Users() {
         )}
       </div>
 
-      {/* Modal: Criar/Editar usuário */}
       <Modal
         isOpen={modal.isOpen}
         onClose={modal.close}

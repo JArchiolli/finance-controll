@@ -22,13 +22,11 @@ export function FinancialSheet() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Para edição inline
   const [editingCell, setEditingCell] = useState<string | null>(null);
   const [editValue, setEditValue] = useState('');
   const [editInstallment, setEditInstallment] = useState('');
   const [editTotalInstallments, setEditTotalInstallments] = useState('');
 
-  // Modais
   const groupModal = useModal();
   const accountModal = useModal();
   const statusModal = useModal();
@@ -37,7 +35,6 @@ export function FinancialSheet() {
   const [newAccountName, setNewAccountName] = useState('');
   const [newAccountGroupId, setNewAccountGroupId] = useState('');
 
-  // Mapa de entries para acesso rápido
   const entryMap: EntryMap = useMemo(() => {
     const map: EntryMap = {};
     entries.forEach((entry) => {
@@ -66,7 +63,6 @@ export function FinancialSheet() {
     loadData();
   }, [loadData]);
 
-  // ── Salvar célula ─────────────────────────────────────
   async function handleSaveCell(accountId: string, month: number) {
     const value = parseFloat(editValue.replace(',', '.'));
     if (isNaN(value)) {
@@ -104,7 +100,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Deletar entry ─────────────────────────────────────
   async function handleDeleteEntry(entryId: string) {
     try {
       await entryService.delete(entryId);
@@ -116,7 +111,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Atualizar status de pagamento ─────────────────────
   async function handleUpdatePaymentStatus(status: PaymentStatus) {
     if (!selectedEntry) return;
     try {
@@ -148,7 +142,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Criar grupo ───────────────────────────────────────
   async function handleCreateGroup() {
     if (!newGroupName.trim()) return;
     try {
@@ -162,7 +155,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Deletar grupo ─────────────────────────────────────
   async function handleDeleteGroup(id: string) {
     if (!confirm('Deletar grupo e todas as contas associadas?')) return;
     try {
@@ -174,7 +166,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Criar conta ───────────────────────────────────────
   async function handleCreateAccount() {
     if (!newAccountName.trim() || !newAccountGroupId) return;
     try {
@@ -189,7 +180,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Deletar conta ─────────────────────────────────────
   async function handleDeleteAccount(id: string) {
     if (!confirm('Deletar conta e todos os lançamentos?')) return;
     try {
@@ -201,7 +191,6 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Formatar valor em BRL ─────────────────────────────
   function formatCurrency(value: number) {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -209,7 +198,6 @@ export function FinancialSheet() {
     }).format(value);
   }
 
-  // ── Estilos baseados no status de pagamento ───────────
   function getPaymentStatusStyles(status?: PaymentStatus) {
     switch (status) {
       case 'PAID_ON_TIME':
@@ -221,19 +209,16 @@ export function FinancialSheet() {
     }
   }
 
-  // ── Calcular total de uma conta no ano ────────────────
   function getAccountTotal(accountId: string) {
     return entries
       .filter((e) => e.accountId === accountId)
       .reduce((sum, e) => sum + Number(e.value), 0);
   }
 
-  // ── Calcular total de um grupo no ano ─────────────────
   function getGroupTotal(group: Group) {
     return group.accounts.reduce((sum, acc) => sum + getAccountTotal(acc.id), 0);
   }
 
-  // ── Iniciar edição de célula ──────────────────────────
   function startEdit(accountId: string, month: number) {
     const key = buildEntryKey(accountId, month);
     const entry = entryMap[key];
@@ -254,7 +239,6 @@ export function FinancialSheet() {
   return (
     <div>
       <Header title="Planilha Financeira" subtitle={`Visão mensal do ano ${year}`}>
-        {/* Seletor de ano */}
         <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 px-2 py-1">
           <button onClick={() => setYear((y) => y - 1)} className="p-1 hover:bg-slate-100 rounded">
             <ChevronLeft size={18} />
@@ -275,7 +259,6 @@ export function FinancialSheet() {
         </div>
       </Header>
 
-      {/* Tabela planilha */}
       <div className="card p-0 overflow-x-auto relative z-0">
         <table className="w-full text-sm">
           <thead>
@@ -296,7 +279,6 @@ export function FinancialSheet() {
           <tbody>
             {groups.map((group) => (
               <>
-                {/* Linha do grupo */}
                 <tr key={`group-${group.id}`} className="bg-primary-50 border-b border-slate-200">
                   <td className="sticky left-0 bg-primary-50 z-10 px-4 py-2.5 font-bold text-primary-900 flex items-center gap-2">
                     {group.name}
@@ -324,7 +306,6 @@ export function FinancialSheet() {
                   </td>
                 </tr>
 
-                {/* Linhas das contas */}
                 {group.accounts.map((account) => (
                   <tr key={`account-${account.id}`} className="group border-b border-slate-100 hover:bg-slate-50">
                     <td className="sticky left-0 bg-white z-10 px-4 py-2 pl-8 text-slate-700 flex items-center gap-2">
@@ -441,7 +422,6 @@ export function FinancialSheet() {
               </>
             ))}
 
-            {/* Linha de total geral */}
             <tr className="bg-slate-100 border-t-2 border-slate-300">
               <td className="sticky left-0 bg-slate-100 z-10 px-4 py-3 font-bold text-slate-900">
                 TOTAL GERAL
@@ -471,7 +451,6 @@ export function FinancialSheet() {
         </div>
       )}
 
-      {/* Modal: Criar grupo */}
       <Modal isOpen={groupModal.isOpen} onClose={groupModal.close} title="Novo Grupo">
         <div className="space-y-4">
           <div>
@@ -492,7 +471,6 @@ export function FinancialSheet() {
         </div>
       </Modal>
 
-      {/* Modal: Criar conta */}
       <Modal isOpen={accountModal.isOpen} onClose={accountModal.close} title="Nova Conta">
         <div className="space-y-4">
           <div>
@@ -526,7 +504,6 @@ export function FinancialSheet() {
         </div>
       </Modal>
 
-      {/* Modal: Status do Pagamento */}
       <Modal isOpen={statusModal.isOpen} onClose={statusModal.close} title="Status do Pagamento">
         {selectedEntry && (
           <div className="space-y-4">

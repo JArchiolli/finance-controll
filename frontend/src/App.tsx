@@ -13,10 +13,8 @@ export function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Rota pública */}
           <Route path="/login" element={<Login />} />
 
-          {/* Rotas privadas */}
           <Route
             element={
               <PrivateRoute>
@@ -36,7 +34,6 @@ export function App() {
             />
           </Route>
 
-          {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

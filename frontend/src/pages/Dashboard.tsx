@@ -45,7 +45,6 @@ export function Dashboard() {
     );
   }
 
-  // Encontrar maior e menor mês
   const nonZeroMonths = data.monthlyData.filter((m) => m.total > 0);
   const maxMonth = nonZeroMonths.reduce((a, b) => (a.total > b.total ? a : b), nonZeroMonths[0]);
   const minMonth = nonZeroMonths.reduce((a, b) => (a.total < b.total ? a : b), nonZeroMonths[0]);
@@ -64,7 +63,6 @@ export function Dashboard() {
         </div>
       </Header>
 
-      {/* Cards resumo */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <div className="card flex items-center gap-4">
           <div className="p-3 bg-primary-100 rounded-lg">
@@ -109,9 +107,7 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Gráfico de barras — Total por mês */}
         <div className="card">
           <h3 className="text-lg font-semibold mb-4">Despesas por Mês</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -125,7 +121,6 @@ export function Dashboard() {
           </ResponsiveContainer>
         </div>
 
-        {/* Gráfico de pizza — Total por grupo */}
         <div className="card">
           <h3 className="text-lg font-semibold mb-4">Distribuição por Grupo</h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -150,7 +145,6 @@ export function Dashboard() {
           </ResponsiveContainer>
         </div>
 
-        {/* Gráfico de linha — Tendência mensal */}
         <div className="card lg:col-span-2">
           <h3 className="text-lg font-semibold mb-4">Tendência Mensal</h3>
           <ResponsiveContainer width="100%" height={300}>

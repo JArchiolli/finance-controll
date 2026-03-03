@@ -14,7 +14,7 @@ export default defineConfig({
         host: true,
         proxy: {
             '/api': {
-                target: 'http://localhost:3333',
+                target: 'https://finance-controll-backend.onrender.com',
                 changeOrigin: true,
             },
         },

@@ -14,13 +14,11 @@ export function Sidebar() {
 
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-primary-900 text-white flex flex-col z-30">
-      {/* Logo */}
       <div className="p-6 border-b border-primary-800">
         <h1 className="text-xl font-bold tracking-tight">💰 Finance</h1>
         <p className="text-primary-300 text-sm mt-1">Controle Financeiro</p>
       </div>
 
-      {/* Navegação */}
       <nav className="flex-1 p-4 space-y-1">
         {navItems
           .filter((item) => !item.adminOnly || isAdmin)
@@ -41,7 +39,6 @@ export function Sidebar() {
           ))}
       </nav>
 
-      {/* Rodapé — Usuário */}
       <div className="p-4 border-t border-primary-800">
         <div className="flex items-center justify-between">
           <div className="min-w-0">
