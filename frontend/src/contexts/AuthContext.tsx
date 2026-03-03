@@ -43,7 +43,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { token, user: userData } = await authService.login(email, password);
+    const response = await authService.login(email, password);
+
+    if (!response?.token || !response?.user) {
+      throw new Error('Resposta inválida do servidor');
+    }
+
+    const { token, user: userData } = response;
     localStorage.setItem(STORAGE_TOKEN_KEY, token);
     localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
     setUser(userData);
