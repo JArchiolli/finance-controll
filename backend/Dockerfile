@@ -12,6 +12,8 @@ RUN npx prisma generate
 
 COPY . .
 
+RUN npm run build
+
 EXPOSE 3333
 
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && npm start"]
